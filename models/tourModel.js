@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const slugify = require('slugify');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const validator = require('validator');
+
 //Creating Schema of Database
 const tourSchema = new mongoose.Schema(
   {
@@ -14,7 +15,7 @@ const tourSchema = new mongoose.Schema(
       //Below to options are only available for Strings.
       maxlength: [40, 'A tour name must have less or equal then 40 characters'],
       minlength: [10, 'A tour name must have more or equal then 10 characters'],
-      validate: [validator.isAlpha, 'Tour name should contains only character'],
+      // validate: [validator.isAlpha, 'Tour name should contains only character'],
     },
     duration: {
       type: Number,
@@ -80,6 +81,36 @@ const tourSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    startLocation: {
+      //GeoJSON
+      type: {
+        type: String,
+        default: 'Point',
+        enum: ['Point'],
+      },
+      coordinates: [Number], //Longitude First and then Latitude
+      address: String,
+      description: String,
+    },
+    locations: [
+      {
+        type: {
+          type: String,
+          default: 'Point',
+          enum: ['Point'],
+        },
+        coordinates: [Number],
+        address: String,
+        description: String,
+        day: Number,
+      },
+    ],
+    tourGuide: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
   },
   {
     toJSON: { virtuals: true },
@@ -89,6 +120,13 @@ const tourSchema = new mongoose.Schema(
 
 tourSchema.virtual('Duration_Weeks').get(function () {
   return this.duration / 7;
+});
+
+//Virtual Populate
+tourSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'tour',
+  localField: '_id',
 });
 
 //DOCUMENT MIDDLEWARE
@@ -115,6 +153,16 @@ tourSchema.pre(/^find/, function (next) {
 // eslint-disable-next-line prefer-arrow-callback
 tourSchema.post(/^find/, function (docs, next) {
   console.log(docs);
+  next();
+});
+
+tourSchema.pre(/^find/, function (next) {
+  this.populate([
+    {
+      path: 'tourGuide',
+      select: '-__v -passwordChangedAt',
+    },
+  ]);
   next();
 });
 

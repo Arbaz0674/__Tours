@@ -1,6 +1,7 @@
 const fs = require('fs');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+// eslint-disable-next-line import/no-useless-path-segments
 const Tour = require('./../../models/tourModel');
 
 dotenv.config({ path: './../../config.env' });
@@ -22,18 +23,16 @@ mongoose
     console.log('DATABASE CONNECTED');
   });
 
-const tours = JSON.parse(
-  fs.readFileSync(`${__dirname}/tours-simple.json`, 'utf-8')
-);
+const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`, 'utf-8'));
 
 const importData = async () => {
   try {
     await Tour.create(tours);
     console.log('All Data has been inserted successfully');
-    process.exit();
   } catch (err) {
     console.log(`We had encountered error:${err}`);
   }
+  process.exit();
 };
 
 const deleteData = async () => {

@@ -6,6 +6,9 @@ const tourController = require('./../controllers/tourController');
 // eslint-disable-next-line import/no-useless-path-segments
 const authController = require('./../controllers/authController');
 
+// eslint-disable-next-line import/no-useless-path-segments
+const reviewController = require('./../controllers/reviewController');
+
 const router = express.Router();
 
 const {
@@ -33,6 +36,15 @@ router
     authController.protect,
     authController.restrictTo('admin', 'lead-guide'),
     deleteTour
+  );
+
+// POST  /tour/:tourId/reviews
+router
+  .route('/:tourId/reviews')
+  .post(
+    authController.protect,
+    authController.restrictTo('user'),
+    reviewController.createReview
   );
 
 module.exports = router;

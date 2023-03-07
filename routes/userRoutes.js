@@ -5,8 +5,15 @@ const authController = require('./../controllers/authController');
 // eslint-disable-next-line import/no-useless-path-segments
 const userController = require('./../controllers/userController');
 
-const { getAllUsers, updateMe, createUser, getUser, updateUser, deleteUser } =
-  userController;
+const {
+  getAllUsers,
+  updateMe,
+  deleteMe,
+  createUser,
+  getUser,
+  updateUser,
+  deleteUser,
+} = userController;
 const router = express.Router();
 
 router.post('/signup', authController.signup);
@@ -24,6 +31,8 @@ router.patch(
 );
 
 router.patch('/updateMe', authController.protect, updateMe);
+
+router.delete('/deleteMe', authController.protect, deleteMe);
 
 router.route('/').get(getAllUsers).post(createUser);
 

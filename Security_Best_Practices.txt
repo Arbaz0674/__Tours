@@ -1,0 +1,43 @@
+1)Compromised Database (Hacker gains access to database)
+
+	1)Strongly encrypt passwords with salt and hash(bcrypt).
+	2)Strongly encrypt password reset tokens(SHA 256).
+
+2)Brute Force Attacks (Hacker tries to guess and try to guess different password for login attempts).
+
+	1)Use bcrypt (to make login request slow).
+	2)Implement rate limiting (express-rate-limiting).
+	3)Implement maximum login attempts.
+
+3)Cross-Site Scripting (XSS) Attacks(Hackers changes content received from server i.e injecting his malicious code)
+
+	1)Store JWT in HTTPOnly cookies. (Never Store JWT token in localStorage)
+	2)Sanitize user input data.
+	3)Set special HTTP headers (helmet package).
+
+4) Denial-OF-Service (DOS) Attack.(Attackers will generate large number of requests and make server to breakdown or inactive).
+
+	1)Implement rate limiting (express-rate-limit).
+	2)Limit body payload(in body-parser).
+	3)Avoid evil regular expressions.
+
+5)NoSQL Query Injection(When user inputs query in place of required data).
+    
+	1)Use mongoose for MongoDB (because of SchemaTypes).
+	2)Sanitize user input data.
+
+6) Other Best Practices And Suggestions
+
+	1) Always use HTTPS.
+	2) Create random password reset tokens with expiry dates.
+	3) Deny access to JWT after password change.
+	4) Don't commit sensitive config data to Git.
+	5) Don't send error details to clients.
+	6) Prevent Cross Site Request Forgery (csurf package). (Hackers make user to execute something unwanted on a page.)
+	7) Require re-authentication before a high-value action such as payments or deleting something.
+	8) Implement a backlist of untrusted JWT.
+	9) Confirm user email address after first creating account.
+     10) Keep user logged in with refresh tokens.
+     11) Implement two-factor authentication.
+     12) Prevent parameter pollution causing Uncaught Expressions.
+
