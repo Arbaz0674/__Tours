@@ -7,9 +7,22 @@ const tourController = require('./../controllers/tourController');
 const authController = require('./../controllers/authController');
 
 // eslint-disable-next-line import/no-useless-path-segments
-const reviewController = require('./../controllers/reviewController');
+const reviewRouter = require('./../routes/reviewRoutes');
+
+// POST  /tour/:tourId/reviews
+// router
+//   .route('/:tourId/reviews')
+//   .post(
+//     authController.protect,
+//     authController.restrictTo('user'),
+//     reviewController.createReview
+//   );
 
 const router = express.Router();
+
+// POST  /tour/:tourId/reviews
+// GET  /tour/:tourId/reviews
+router.use('/:tourId/reviews', reviewRouter);
 
 const {
   // checkID,
@@ -36,15 +49,6 @@ router
     authController.protect,
     authController.restrictTo('admin', 'lead-guide'),
     deleteTour
-  );
-
-// POST  /tour/:tourId/reviews
-router
-  .route('/:tourId/reviews')
-  .post(
-    authController.protect,
-    authController.restrictTo('user'),
-    reviewController.createReview
   );
 
 module.exports = router;
