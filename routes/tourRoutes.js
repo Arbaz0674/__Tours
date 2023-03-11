@@ -37,14 +37,37 @@ const {
 
 // router.param('id', checkID);
 router.route('/aggregate-tours').get(aggregate);
-router.route('/monthly-plan/:year').get(monthlyPlan);
+router
+  .route('/monthly-plan/:year')
+  .get(
+    authController.protect,
+    authController.restrictTo('admin', 'lead-guide', 'guide'),
+    monthlyPlan
+  );
 
-router.route('/').get(authController.protect, getAllTours).post(createTour);
+router
+  .route('/tours-within/:distance/center/:latlng/unit/:unit')
+  .get(tourController.getToursWithin);
+
+router.route('/distances/:latlng/unit/:unit').get(tourController.getDistances);
+
+router
+  .route('/')
+  .get(authController.protect, getAllTours)
+  .post(
+    authController.protect,
+    authController.restrictTo('admin', 'lead-guide'),
+    createTour
+  );
 
 router
   .route('/:id')
   .get(tour)
-  .patch(updateTour)
+  .patch(
+    authController.protect,
+    authController.restrictTo('admin', 'lead-guide'),
+    updateTour
+  )
   .delete(
     authController.protect,
     authController.restrictTo('admin', 'lead-guide'),

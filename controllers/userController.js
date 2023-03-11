@@ -62,6 +62,12 @@ exports.createUser = (req, res) => {
     message: 'This route has not yet defined',
   });
 };
+
+exports.getMe = (req, res, next) => {
+  req.params.id = req.user.id;
+  next();
+};
+
 exports.getUser = factory.getOne(User);
 //Do not update passwords with this!
 exports.updateUser = factory.updateOne(User);

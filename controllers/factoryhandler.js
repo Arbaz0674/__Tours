@@ -76,10 +76,12 @@ exports.getAll = (Model) =>
       .pagingFields();
     // console.log('Output of features.query --->');
     // console.log(features.query);
-    const doc = await features.query;
+    // const doc = await features.query.explain();
+    const doc = await features.query.explain();
 
     res.status(200).json({
       status: 'success',
+      result: doc.length,
       data: {
         doc,
       },

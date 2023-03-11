@@ -24,15 +24,22 @@ router.post('/forgotPassword', authController.forgotPassword);
 
 router.patch('/resetPassword/:token', authController.resetPassword);
 
-router.patch(
-  '/updatePassword',
+router.use(authController.protect);
+
+router.patch('/updatePassword', authController.updatePassword);
+
+router.get(
+  '/me',
   authController.protect,
-  authController.updatePassword
+  userController.getMe,
+  userController.getUser
 );
 
-router.patch('/updateMe', authController.protect, updateMe);
+router.patch('/updateMe', updateMe);
 
-router.delete('/deleteMe', authController.protect, deleteMe);
+router.delete('/deleteMe', deleteMe);
+
+router.use(authController.restrictTo('admin'));
 
 router.route('/').get(getAllUsers).post(createUser);
 
