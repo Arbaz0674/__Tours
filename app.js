@@ -18,6 +18,9 @@ const xss = require('xss-clean');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const hpp = require('hpp'); //HTML Parameter Pollution
 
+// eslint-disable-next-line import/no-extraneous-dependencies
+const cookieParser = require('cookie-parser');
+
 //Importing our modules
 //Error Class Definition
 const AppError = require('./utils/appError');
@@ -43,7 +46,14 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 //Set Security HTTP headers
-app.use(helmet()); // helmet() returns a function which will acts as a middleware
+// app.use(helmet()); // helmet() returns a function which will acts as a middleware
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false,
+  })
+);
+
 console.log(process.env.NODE_ENV);
 
 //Development Logging
@@ -61,6 +71,7 @@ app.use('/api', limiter);
 
 //Body Parser :- Reading data from body into req.body
 app.use(express.json({ limit: '10kb' }));
+app.use(cookieParser());
 
 //Data Sanitization against NoSQL query injection
 app.use(mongoSanitize());
@@ -84,7 +95,7 @@ app.use(
 //Test Middleware
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
-  console.log(req.headers);
+  console.log(req.cookies);
   next();
 });
 
