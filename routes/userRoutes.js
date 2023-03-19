@@ -6,6 +6,8 @@ const authController = require('./../controllers/authController');
 const userController = require('./../controllers/userController');
 
 const {
+  uploadUserPhoto,
+  resizeUserPhoto,
   getAllUsers,
   updateMe,
   deleteMe,
@@ -37,7 +39,7 @@ router.get(
   userController.getUser
 );
 
-router.patch('/updateMe', updateMe);
+router.patch('/updateMe', uploadUserPhoto, resizeUserPhoto, updateMe);
 
 router.delete('/deleteMe', deleteMe);
 
