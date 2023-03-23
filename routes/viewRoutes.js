@@ -8,8 +8,16 @@ const viewController = require('./../controllers/viewsController');
 // eslint-disable-next-line import/no-useless-path-segments
 const authController = require('./../controllers/authController');
 
+// eslint-disable-next-line import/no-useless-path-segments
+const bookingController = require('./../controllers/bookingController');
+
 //Initial Page
-router.get('/', authController.isLoggedIn, viewController.getOverview);
+router.get(
+  '/',
+  bookingController.createBookingCheckout,
+  authController.isLoggedIn,
+  viewController.getOverview
+);
 
 //Create Route for Detail Page
 router
@@ -22,6 +30,8 @@ router
   .get(authController.isLoggedIn, viewController.getloginForm);
 
 router.get('/me', authController.protect, viewController.getAccount);
+
+router.get('/my-tours', authController.protect, viewController.getMyTours);
 
 router.post(
   '/submit-user-data',

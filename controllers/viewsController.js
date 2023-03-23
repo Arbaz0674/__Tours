@@ -9,6 +9,7 @@ const catchAsync = require('./../utils/catchAsync');
 
 // eslint-disable-next-line import/no-useless-path-segments
 const AppError = require('./../utils/appError');
+const Booking = require('../models/bookingModel');
 
 exports.getOverview = catchAsync(async (req, res) => {
   //1) Get Tour Data from collection
@@ -73,3 +74,17 @@ exports.updateUserData = async (req, res, next) => {
     user: updatedUser,
   });
 };
+
+exports.getMyTours = catchAsync(async (req, res, next) => {
+  //1) Find all bookings
+  const bookings = await Booking.find({ user: req.user.id });
+
+  //2) Find Tour with the return ID's
+  const tourIDs = bookings.map((el) => el.tour);
+  const tours = await Tour.find({ _id: { $in: tourIDs } });
+
+  res.status(200).render('overview', {
+    title: 'My Tours',
+    tours,
+  });
+});
