@@ -21,6 +21,8 @@ const hpp = require('hpp'); //HTML Parameter Pollution
 // eslint-disable-next-line import/no-extraneous-dependencies
 const cookieParser = require('cookie-parser');
 
+const compression = require('compression');
+
 //Importing our modules
 //Error Class Definition
 const AppError = require('./utils/appError');
@@ -55,8 +57,6 @@ app.use(
     crossOriginEmbedderPolicy: false,
   })
 );
-
-console.log(process.env.NODE_ENV);
 
 //Development Logging
 if (process.env.NODE_ENV === 'development') {
@@ -94,6 +94,8 @@ app.use(
     ],
   })
 ); //Clear up query string
+
+app.use(compression());
 
 //Test Middleware
 app.use((req, res, next) => {

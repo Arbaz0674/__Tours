@@ -63,6 +63,7 @@ const sendErrorProd = (err, req, res) => {
     });
   }
   //B) Rendered Website
+  console.log(`ERROR`, err);
   //Operational,trusted Error:send to client
   if (err.isOperational) {
     return res.status(err.statusCode).render('error', {

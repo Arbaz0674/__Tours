@@ -137,13 +137,11 @@ tourSchema.virtual('reviews', {
 //DOCUMENT MIDDLEWARE
 tourSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
-  console.log(this);
   next();
 });
 
 // eslint-disable-next-line prefer-arrow-callback
 tourSchema.post('save', function (doc, next) {
-  console.log(doc);
   next();
 });
 
@@ -157,7 +155,6 @@ tourSchema.pre(/^find/, function (next) {
 
 // eslint-disable-next-line prefer-arrow-callback
 tourSchema.post(/^find/, function (docs, next) {
-  console.log(docs);
   next();
 });
 

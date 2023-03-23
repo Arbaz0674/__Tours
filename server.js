@@ -30,14 +30,15 @@ const appServer = app.listen(server, '127.0.0.1', () => {
 });
 
 process.on('unhandledRejection', (err) => {
-  console.log(err.name, err.message);
   appServer.close(() => {
     process.exit(1); // 0 - > success , 1 -> Uncaught Exception
   });
 });
 
-process.on('uncaughtException',(err)=>{
+process.on('uncaughtException', (err) => {
+  console.log(`UNCAUGHT EXCEPTION! Shutting down...`);
+  console.log(err.name, err.message);
   appServer.close(() => {
     process.exit(1); // 0 - > success , 1 -> Uncaught Exception
   });
-})
+});

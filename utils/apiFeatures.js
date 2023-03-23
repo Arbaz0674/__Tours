@@ -8,14 +8,12 @@ class APIFeatures {
     //1A)Filtering
     // eslint-disable-next-line node/no-unsupported-features/es-syntax
     const queryObj = { ...this.queryString };
-    // console.log(...req.query);
     const excludeFields = ['page', 'sort', 'limit', 'fields'];
     excludeFields.forEach((el) => delete queryObj[el]);
 
     //1B) Advanced Filtering
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-    // console.log(queryStr);
     // let query = Tour.find(JSON.parse(queryStr));
     this.query = this.query.find(JSON.parse(queryStr));
     return this;
