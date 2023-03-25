@@ -4,6 +4,9 @@ const express = require('express');
 const morgan = require('morgan');
 
 // eslint-disable-next-line import/no-extraneous-dependencies
+const cors = require('cors');
+
+// eslint-disable-next-line import/no-extraneous-dependencies
 const rateLimit = require('express-rate-limit');
 
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -45,6 +48,10 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
 //1)GLOBAL MIDDLEWARES
+//Implement CORS
+app.use(cors({}));
+
+app.options('*', cors());
 
 //Serving Static Files
 app.use(express.static(path.join(__dirname, 'public')));
